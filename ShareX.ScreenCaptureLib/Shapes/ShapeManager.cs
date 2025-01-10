@@ -1355,16 +1355,56 @@ namespace ShareX.ScreenCaptureLib
             return null;
         }
 
-        public SimpleWindowInfo FindSelectedWindow()
+   public SimpleWindowInfo FindSelectedWindow()
         {
             if (Windows != null)
             {
-                return Windows.FirstOrDefault(x => x.Rectangle.Contains(InputManager.MousePosition));
+                var win = Windows.FirstOrDefault(x =>
+                {
+                    if (!x.Rectangle.Contains(InputManager.MousePosition))
+                        return false;
+
+                    if (x.WindowInfo != null && !string.IsNullOrEmpty(x.WindowInfo.Text))
+                    {
+                        if (x.WindowInfo.Text.Contains("NVIDIA GeForce Overlay", StringComparison.InvariantCultureIgnoreCase))
+                            return false;
+                    }
+
+                    return true;
+                });
+                return win;
             }
 
             return null;
         }
 
+        public WindowInfo FindSelectedWindowInfo(Point position)
+        {
+            if (Windows != null)
+            {
+                SimpleWindowInfo windowInfo = Windows.FirstOrDefault(x =>
+                {
+                    if (!x.IsWindow || !x.Rectangle.Contains(position))
+                        return false;
+
+                    if (x.WindowInfo != null && !string.IsNullOrEmpty(x.WindowInfo.Text))
+                    {
+                        if (x.WindowInfo.Text.Contains("NVIDIA GeForce Overlay", StringComparison.InvariantCultureIgnoreCase))
+                            return false;
+                    }
+
+                    return true;
+                });
+
+                if (windowInfo != null)
+                {
+                    return windowInfo.WindowInfo;
+                }
+            }
+
+            return null;
+        }
+        
         public WindowInfo FindSelectedWindowInfo(Point position)
         {
             if (Windows != null)
