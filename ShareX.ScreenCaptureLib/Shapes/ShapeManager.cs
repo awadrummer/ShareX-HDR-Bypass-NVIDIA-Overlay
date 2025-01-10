@@ -1,4 +1,4 @@
-﻿#region License Information (GPL v3)
+#region License Information (GPL v3)
 
 /*
     ShareX - A program that allows you to take screenshots and share any file type
@@ -1405,21 +1405,6 @@ namespace ShareX.ScreenCaptureLib
             return null;
         }
         
-        public WindowInfo FindSelectedWindowInfo(Point position)
-        {
-            if (Windows != null)
-            {
-                SimpleWindowInfo windowInfo = Windows.FirstOrDefault(x => x.IsWindow && x.Rectangle.Contains(position));
-
-                if (windowInfo != null)
-                {
-                    return windowInfo.WindowInfo;
-                }
-            }
-
-            return null;
-        }
-
         public Bitmap RenderOutputImage(Bitmap bmp)
         {
             return RenderOutputImage(bmp, Point.Empty);
